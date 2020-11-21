@@ -21,8 +21,22 @@ public class FlightController {
 	}
 
 	@GetMapping("/flights")
-	public List<Flight> getAllFlights() {
-		return flightRepository.findAll();
+	public List<Flight> getAllFlights(
+			@RequestParam(required = false) String start,
+			@RequestParam(required = false) String end,
+			@RequestParam(required = false) String price
+	) {
+		if (price != null) {
+			int p = Integer.parseInt(price, 10);
+			return flightRepository.findUnderPrice(p);
+		} else if (start != null && end != null) {
+			return flightRepository.findByLocation(start, end);
+		} else if (start != null) {
+			return flightRepository.findByStart(start);
+		} else if (end != null) {
+			return flightRepository.findByEnd(end);
+		}
+			return flightRepository.findAll();
 	}
 
 	@PostMapping("/add-flight")
