@@ -24,9 +24,13 @@ public class FlightController {
 	public List<Flight> getAllFlights(
 			@RequestParam(required = false) String start,
 			@RequestParam(required = false) String end,
-			@RequestParam(required = false) String price
+			@RequestParam(required = false) String price,
+			@RequestParam(required = false) String provider
 	) {
-		if (price != null) {
+		if (price != null && start != null && end != null) {
+			int p = Integer.parseInt(price, 10);
+			return flightRepository.findByPriceAndLocation(p, start, end);
+		} else if (price != null) {
 			int p = Integer.parseInt(price, 10);
 			return flightRepository.findUnderPrice(p);
 		} else if (start != null && end != null) {
@@ -35,8 +39,15 @@ public class FlightController {
 			return flightRepository.findByStart(start);
 		} else if (end != null) {
 			return flightRepository.findByEnd(end);
+		} else if (provider != null) {
+			return flightRepository.findByProvider(provider);
 		}
 			return flightRepository.findAll();
+	}
+
+	@GetMapping("/flights/{id}")
+	public Flight getFlightById(@PathVariable(value = "id") int id) throws FlightNotFoundException {
+		return flightRepository.findById(id).orElseThrow(FlightNotFoundException::new);
 	}
 
 	@PostMapping("/add-flight")
