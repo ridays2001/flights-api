@@ -20,7 +20,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 	@Query(value = "SELECT * FROM flight WHERE price < :price", nativeQuery = true)
 	List<Flight> findUnderPrice(int price);
 
-	@Query(value = "SELECT * FROM flight WHERE price < :price and start = :start and end = :end", nativeQuery = true)
+	@Query(value = "SELECT * FROM flight WHERE price < :price AND start = :start AND end = :end", nativeQuery = true)
 	List<Flight> findByPriceAndLocation(int price, String start, String end);
 
 	@Query(value = "SELECT * FROM flight WHERE provider = :provider", nativeQuery = true)
