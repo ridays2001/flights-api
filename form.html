@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Form</title>
+	</head>
+
+	<body>
+		<form onsubmit="send()">
+			<div class="group">
+				<label for="provider">Flight Provider</label>
+				<input type="text" name="provider" id="provider" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="price">Price</label>
+				<input type="number" name="price" id="price" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="startTime">Start Time</label>
+				<input type="text" name="startTime" id="startTime" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="endTime">End Time</label>
+				<input type="text" name="endTime" id="endTime" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="start">Start Location</label>
+				<input type="text" name="start" id="start" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="end">End Location</label>
+				<input type="text" name="end" id="end" />
+			</div>
+
+			<br />
+
+			<div class="group">
+				<label for="duration">Duration of the flight</label>
+				<input type="number" name="duration" id="duration" />
+			</div>
+
+			<div class="group">
+				<input type="submit" value="Submit" />
+			</div>
+		</form>
+
+		<style>
+			form {
+				width: 30%;
+				margin: 0 auto;
+				margin-top: 5em;
+			}
+			.group {
+				margin: 1em auto;
+			}
+		</style>
+
+		<script>
+			const send = () => {
+				const values = {
+					provider: document.getElementById('provider').value,
+					price: Number(document.getElementById('price').value),
+					startTime: document.getElementById('startTime').value,
+					endTime: document.getElementById('endTime').value,
+					start: document.getElementById('start').value,
+					end: document.getElementById('end').value,
+					duration: Number(document.getElementById('duration').value)
+				};
+				console.log(values);
+				event.preventDefault();
+				fetch('http://localhost:8080/add-flight', {
+					method: 'POST',
+					body: JSON.stringify(values),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+					.then(() => alert('Submitted!'))
+					.catch(console.log);
+				return false;
+			};
+		</script>
+	</body>
+</html>
